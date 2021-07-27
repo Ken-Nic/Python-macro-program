@@ -6,7 +6,7 @@ This is the code to a small workflow app I made in rougly 2-3 days.
 * src: All the code for the program
   * setup.py: Code that sets up the sqlite database that holds macro data, also can be used to clear the db
   * data_access.py: Code that facilates the access to the database, all sql quries can be found in here
-  * view: Code that facilates the GUI aspects of the program
+  * view.py: Code that facilates the GUI aspects of the program
 
 
 ## Reason
