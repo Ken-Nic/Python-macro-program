@@ -210,14 +210,14 @@ class ViewGui(tk.Tk):
         setting_frame.pack()
 
     def new_group(self):
-        create_macro = tk.Toplevel()
-        create_macro.grab_set()
-        create_macro.title("Add macro")
-        create_macro.minsize(250, 100)
-        create_macro.maxsize(450, 300)
-        name_label = tk.Label(create_macro, text="Name:")
-        status_label = tk.Label(create_macro, text="")
-        name_entry = tk.Entry(create_macro)
+        new_macro = tk.Toplevel()
+        new_macro.grab_set()
+        new_macro.title("Add macro")
+        new_macro.minsize(250, 100)
+        new_macro.maxsize(450, 300)
+        name_label = tk.Label(new_macro, text="Name:")
+        status_label = tk.Label(new_macro, text="")
+        name_entry = tk.Entry(new_macro)
         name_label.pack()
         name_entry.pack()
         status_label.pack()
@@ -226,11 +226,11 @@ class ViewGui(tk.Tk):
             if name_entry.get() != '' and name_entry.get() != '\n' and self.database.check_group_by_name(name_entry.get()) is not True:
                 self.database.add_group(name_entry.get())
                 self.refresh_groups()
-                create_macro.destroy()
+                new_macro.destroy()
             else:
                 status_label.config(text="Name is missing or group already exist")
 
-        finalize_button = tk.Button(create_macro, text="Finish", command=validate_button)
+        finalize_button = tk.Button(new_macro, text="Finish", command=validate_button)
         finalize_button.pack()
 
     def refresh_records(self, group_id):
@@ -248,17 +248,17 @@ class ViewGui(tk.Tk):
         self.populate_groups(self.marco_group_listbox)
 
     def add_new_app(self, group_id):
-        create_macro = tk.Toplevel()
-        create_macro.grab_set()
-        create_macro.title("New App")
-        create_macro.minsize(250, 100)
-        create_macro.maxsize(450, 300)
+        new_app_window = tk.Toplevel()
+        new_app_window.grab_set()
+        new_app_window.title("New App")
+        new_app_window.minsize(250, 100)
+        new_app_window.maxsize(450, 300)
 
-        name_label = tk.Label(create_macro, text="Name:")
-        dir_label = tk.Label(create_macro, text="program path:")
-        status_label = tk.Label(create_macro, text="")
+        name_label = tk.Label(new_app_window, text="Name:")
+        dir_label = tk.Label(new_app_window, text="program path:")
+        status_label = tk.Label(new_app_window, text="")
 
-        name_entry = tk.Entry(create_macro)
+        name_entry = tk.Entry(new_app_window)
 
         def add_app_address(entry_text):
             filename = filedialog.askopenfilename(initialdir="/",
@@ -269,7 +269,7 @@ class ViewGui(tk.Tk):
             if app_path != '' and app_path != "\n":
                 entry_text.set(filename)
 
-        dir_frame = tk.Frame(create_macro)
+        dir_frame = tk.Frame(new_app_window)
         dir_address = tk.StringVar()
         bound_app_address = partial(add_app_address,dir_address)
         dir_entry = tk.Entry(dir_frame, textvariable=dir_address)
@@ -290,25 +290,25 @@ class ViewGui(tk.Tk):
                     self.database.check_record(group_id, dir_entry.get()) is not True:
                 self.database.add_record(name_entry.get(), group_id, 'A', dir_entry.get())
                 self.refresh_records(group_id)
-                create_macro.destroy()
+                new_app_window.destroy()
             else:
                 status_label.config(text="Name or path for application is missing or already exist in this macro group")
 
-        finalize_button = tk.Button(create_macro, text="Finish", command=validate_button)
+        finalize_button = tk.Button(new_app_window, text="Finish", command=validate_button)
         finalize_button.pack(ipadx=5)
 
     def add_new_link(self, group_id):
-        new_top_window = tk.Toplevel()
-        new_top_window.grab_set()
-        new_top_window.title("New link")
-        new_top_window.minsize(250, 100)
-        new_top_window.maxsize(450, 300)
+        new_link_window = tk.Toplevel()
+        new_link_window.grab_set()
+        new_link_window.title("New link")
+        new_link_window.minsize(250, 100)
+        new_link_window.maxsize(450, 300)
 
-        name_label = tk.Label(new_top_window, text="Name:")
-        dir_label = tk.Label(new_top_window, text="url path:")
-        status_label = tk.Label(new_top_window, text="")
-        name_entry = tk.Entry(new_top_window)
-        dir_entry = tk.Entry(new_top_window)
+        name_label = tk.Label(new_link_window, text="Name:")
+        dir_label = tk.Label(new_link_window, text="url path:")
+        status_label = tk.Label(new_link_window, text="")
+        name_entry = tk.Entry(new_link_window)
+        dir_entry = tk.Entry(new_link_window)
         name_label.pack()
         name_entry.pack()
         dir_label.pack()
@@ -320,11 +320,11 @@ class ViewGui(tk.Tk):
                     self.database.check_record(group_id, dir_entry.get()) is not True:
                 self.database.add_record(name_entry.get(), group_id, 'L', dir_entry.get())
                 self.refresh_records(group_id)
-                new_top_window.destroy()
+                new_link_window.destroy()
             else:
                 status_label.config(text="Name or path for the link is missing or already exist in this macro group")
 
-        finalize_button = tk.Button(new_top_window, text="Finish", command=validate_button)
+        finalize_button = tk.Button(new_link_window, text="Finish", command=validate_button)
         finalize_button.pack(ipadx=5)
 
     def edit_app(self, group_id, id):
@@ -385,8 +385,8 @@ class ViewGui(tk.Tk):
         finalize_button.pack(ipadx=5)
 
     def edit_link(self, group_id, id):
-        create_macro = tk.Toplevel()
-        create_macro.grab_set()
+        new_top_window = tk.Toplevel()
+        new_top_window.grab_set()
         db_result = self.database.get_record(id, group_id)
         name = db_result[0][1]
         address = db_result[0][4]
@@ -394,14 +394,14 @@ class ViewGui(tk.Tk):
         entry_name.set(name)
         entry_address = tk.StringVar()
         entry_address.set(address)
-        create_macro.title(f"Editing {name}")
-        create_macro.minsize(350, 200)
-        name_label = tk.Label(create_macro, text="Name:")
-        dir_label = tk.Label(create_macro, text="program path:")
-        status_label = tk.Label(create_macro, text="")
-        name_entry = tk.Entry(create_macro,
+        new_top_window.title(f"Editing {name}")
+        new_top_window.minsize(350, 200)
+        name_label = tk.Label(new_top_window, text="Name:")
+        dir_label = tk.Label(new_top_window, text="program path:")
+        status_label = tk.Label(new_top_window, text="")
+        name_entry = tk.Entry(new_top_window,
                               textvariable=entry_name)
-        dir_entry = tk.Entry(create_macro,
+        dir_entry = tk.Entry(new_top_window,
                              textvariable=entry_address)
         name_label.pack()
         name_entry.pack()
@@ -414,10 +414,10 @@ class ViewGui(tk.Tk):
                 self.database.edit_record_address(id, group_id, dir_entry.get())
                 self.database.edit_record_name(id, group_id, name_entry.get())
                 self.refresh_groups()
-                create_macro.destroy()
+                new_top_window.destroy()
             else:
                 status_label.config(text="Name or address already exist or is empty")
-        finalize_button = tk.Button(create_macro, text="Finish", command=validate_button)
+        finalize_button = tk.Button(new_top_window, text="Finish", command=validate_button)
         finalize_button.pack(ipadx=5)
 
     def edit_group(self, group_id):
