@@ -4,9 +4,9 @@ from tkinter import Button
 from tkinter import Listbox
 from tkinter import Scrollbar
 from tkinter import filedialog
+from tkinter import PhotoImage
 import data_access as data
 from functools import partial
-from sqlite3 import OperationalError
 import os
 import webbrowser
 import time
@@ -18,6 +18,18 @@ class ViewGui(tk.Tk):
         tk.Tk.__init__(self)
         self.database = data.DatabaseAccess("macro_database.db")
 
+        self.play_img = PhotoImage(file='assets\img\play.png')
+        self.play_img = self.play_img.subsample(1)
+
+        self.edit_img = PhotoImage(file='assets\img\edit.png')
+        self.edit_img = self.edit_img.subsample(2)
+
+        self.delete_img = PhotoImage(file='assets\img\del.png')
+        self.delete_img = self.delete_img.subsample(1)
+
+        self.button_width = 25
+        self.button_height = 25
+
         if self.database.check_db() is True:
             pass
         else:
@@ -25,6 +37,7 @@ class ViewGui(tk.Tk):
 
         # Title
         self.title("Macro App")
+        self.iconbitmap('assets\img\icon.ico')
         hub = tk.Frame(self)
         hub.grid_columnconfigure(0,weight=1)
         hub.grid_rowconfigure(0, weight=1)
@@ -117,18 +130,30 @@ class ViewGui(tk.Tk):
             new_app_name.pack(side=tk.LEFT)
 
             bound_app_trigger = partial(self.activate_address,apps[0],id,apps[3])
-            new_app_trigger = tk.Button(seating_frame, text="P", command=bound_app_trigger)
+            new_app_trigger = tk.Button(seating_frame, text="P",
+                                        image=self.play_img,
+                                        height=self.button_width,
+                                        width=self.button_height,
+                                        command=bound_app_trigger)
+
             new_app_trigger.pack(side=tk.RIGHT)
 
             bound_edit_app = partial(self.edit_app, id, apps[0])
             new_app_edit = tk.Button(seating_frame,
                                      text="E",
+                                     image=self.edit_img,
+                                     height=self.button_width,
+                                     width=self.button_height,
                                      command=bound_edit_app)
+
             new_app_edit.pack(side=tk.RIGHT)
 
             bound_delete_app = partial(self.delete_record, id, apps[0])
             new_app_delete = tk.Button(seating_frame,
                                        text="X",
+                                       height=self.button_width,
+                                       width=self.button_height,
+                                       image=self.delete_img,
                                        command=bound_delete_app)
             new_app_delete.pack(side=tk.RIGHT)
 
@@ -161,18 +186,28 @@ class ViewGui(tk.Tk):
             new_link_name.pack(side=tk.LEFT)
 
             bound_link_trigger = partial(self.activate_address, links[0], id, links[3])
-            new_link_trigger = tk.Button(seating_frame,text="P",command=bound_link_trigger)
+            new_link_trigger = tk.Button(seating_frame,text="P",
+                                         image=self.play_img,
+                                         height=self.button_width,
+                                         width=self.button_height,
+                                         command=bound_link_trigger)
             new_link_trigger.pack(side=tk.RIGHT)
 
             bound_edit_link = partial(self.edit_link, id, links[0])
             new_link_edit = tk.Button(seating_frame,
                                       text="E",
-                                      command = bound_edit_link)
+                                      image=self.edit_img,
+                                      height=self.button_width,
+                                      width=self.button_height,
+                                      command=bound_edit_link)
             new_link_edit.pack(side=tk.RIGHT)
 
             bound_delete_link = partial(self.delete_record, id, links[0])
             new_link_delete = tk.Button(seating_frame,
                                         text="X",
+                                        image=self.delete_img,
+                                        height=self.button_width,
+                                        width=self.button_height,
                                         command=bound_delete_link)
             new_link_delete.pack(side=tk.RIGHT)
 
