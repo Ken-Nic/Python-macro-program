@@ -2,8 +2,9 @@
 This is the code to a small workflow app I made in rougly 2-3 days.
 
 ## Folder Structure
-* Doc: Contains a readme file that walks through how to set up and use the program
-* src: All the code for the program
+* Doc: Contains a readme file that provides a walk through how to set up and use the program
+* src: All the code and folders for the program
+  * assets/img: Folder that holds all of the programs icons 
   * setup.py: Code that sets up the sqlite database that holds macro data, also can be used to clear the db
   * data_access.py: Code that facilates the access to the database, all sql quries can be found in here
   * view.py: Code that facilates the GUI aspects of the program
